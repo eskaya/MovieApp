@@ -1,8 +1,8 @@
 import { style } from '@angular/animations';
 import { StylesCompileDependency } from '@angular/compiler';
 import {Component} from '@angular/core';
-import {Movies} from '../movie.datasource';
 import {Movie} from '../movie';
+import {MovieService} from '../movie.service';
 
 @Component({
     selector: 'movies' , // etiket şeklinde app.component.html de çağırarak çalıştırırız
@@ -11,12 +11,25 @@ import {Movie} from '../movie';
 
 export class MoviesComponent{
     title = "Movies List";
-    movies = Movies;
+    movies: Movie[];
     selectedMovie : Movie;
 
+    constructor(private movieService: MovieService){}
+    
+    ngOnInit():void{
+        this.getMovies();
+    }
 
     onSelect(movie:Movie): void{
         this.selectedMovie =movie;
+    }
+
+    getMovies():void{
+        this.movieService.getMovies()
+            .subscribe(movies =>{
+                this.movies = movies;
+            });
+
     }
   
 }
