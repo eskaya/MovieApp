@@ -3,17 +3,23 @@ import {Movie} from './movie';
 import {Movies} from './movie.datasource';
 import {Observable , of} from 'rxjs';
 import {LogginService} from './loggin.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-    constructor( private logginService: LogginService) { }
+  private apiMoviesUrl = 'api/movies';
+
+    constructor(
+       private logginService: LogginService,
+       private http: HttpClient
+       ) { }
 
     getMovies(): Observable<Movie[]> {
         this.logginService.add('MovieService: listening log');
-        return of(Movies) ;
+        return this.http.get<Movie[]>(this.apiMoviesUrl);
     }
 
     getMovie(id): Observable<Movie>{
