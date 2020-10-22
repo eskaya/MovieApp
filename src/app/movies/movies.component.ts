@@ -1,6 +1,7 @@
 import { style } from '@angular/animations';
 import { StylesCompileDependency } from '@angular/compiler';
 import {Component} from '@angular/core';
+import { VirtualTimeScheduler } from 'rxjs';
 import {Movie} from '../movie';
 import {MovieService} from '../movie.service';
 
@@ -31,5 +32,19 @@ export class MoviesComponent{
             });
 
     }
+
+    add(name:string, imgUrl:string, descriptions:string): void {
+        this.movieService.add({
+            name,
+            imgUrl,
+            descriptions,
+        } as Movie).subscribe(movie=> this.movies.push(movie));
+    }
+
+    delete(movie: Movie): void{
+        this.movies = this.movies.filter(m=>m!==movie);
+        this.movieService.delete(movie).subscribe();
+    }
+  
   
 }
